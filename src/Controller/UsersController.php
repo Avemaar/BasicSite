@@ -22,7 +22,7 @@ class UsersController extends AppController
 	$attempt=0;
 		if($this->request->is('post'))
 		{
-			
+			/*Jelszo titkositott tárolása*/
 			$password=Security::hash($this->request->getData('password'));
 			$check=$this->Users->find('all')
 			->where(['name'=>$this->request->getData('name'),'password'=>$password])
