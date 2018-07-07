@@ -13,7 +13,66 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
-    /**
+    
+	/*
+	*Sajat rész
+	*/
+	public function login()
+	{
+	$attempt=0;
+		if($this->request->is('post'))
+		{
+			
+			$password=Security::hash($this->request->getData('password'));
+			$check=$this->Users->find('all')
+			->where(['name'=>$this->request->getData('name'),'password'=>$password])
+			->first()
+			;
+		
+		
+		if(!($check))
+			{$this->Flash->error(__('Wrong user or password'));
+			
+			$temp=$this->Users->find()
+			->where(['name'=>$this->request->getData('name')])
+			->first()
+			;
+			
+			//debug($temp);
+				if($temp)
+				{
+					$temp->attemp+=1;
+					$attempt=$temp->attemp;
+					$this->Users->save($temp);
+				$this->set(compact('attempt'));
+				}
+			
+			}
+		else{
+			
+			
+			$session = $this->getRequest()->getSession();
+			$session->write('useridd',$check->id);
+			
+			
+			$this->request->session()->write('userid',$check->id);
+			
+			//$this->Flash->success($this->request->session()->read('userid'));
+			//$this->Flash->success($check->name);
+			
+			$this->viewBuilder()->layout('inlogged'); 
+			$this->layout='inlogged';
+			return $this->redirect(['action' => 'greetings',$check->id]);
+			
+			echo ('found!');}
+			
+		}
+	
+	
+	
+	}
+	
+	/**
      * Index method
      *
      * @return \Cake\Http\Response|void
