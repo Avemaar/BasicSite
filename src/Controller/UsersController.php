@@ -83,19 +83,19 @@ class UsersController extends AppController
 		
 		
         if ($id==$session->read('useridd'))
-       // if ($id==$this->request->session()->read('userid'))
-		{
-		$user = $this->Users->get($id, [
-            'contain' => []
-        ]);
+			   // if ($id==$this->request->session()->read('userid'))
+				{
+				$user = $this->Users->get($id, [
+					'contain' => []
+				]);
 
-        $this->set(compact('user'));
-		}else
-		{
-		$this->Flash->error(__('Unauthorized Access!'));
-		return $this->redirect(['action'=>'login']);
-		
-		}
+				$this->set(compact('user'));
+				}else
+					{
+					$this->Flash->error(__('Unauthorized Access!'));
+					return $this->redirect(['action'=>'login']);
+					
+					}
     }
 	
 	
