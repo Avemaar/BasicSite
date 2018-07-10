@@ -3,6 +3,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+use Cake\Core\Configure;
+use Cake\Utility\Security;
+
+
 /**
  * Users Controller
  *
@@ -98,7 +102,7 @@ class UsersController extends AppController
 					}
     }
 	
-	protected function profile($id = null)
+	public function profile($id = null)
     {
 	$this->viewBuilder()->layout('inlogged'); 
 		
@@ -108,7 +112,7 @@ class UsersController extends AppController
 		
 		
         if ($id==$session->read('useridd'))
-       // if ($id==$this->request->session()->read('userid'))
+       
 		{
 		$user = $this->Users->get($id, [
             'contain' => []
@@ -124,17 +128,31 @@ class UsersController extends AppController
     }
 	
 	
+	public function logout()
+	{
+
+			
+			
+			$this->request->session()->write('userid',null);
+			
+			$this->Flash->success(Configure::read('userid'));
+			
+			return $this->redirect(['action' => 'login']);
+			
+	}
+	
+	
 	/**
      * Index method
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
-    {
-        $users = $this->paginate($this->Users);
+    // public function index()
+    // {
+        // $users = $this->paginate($this->Users);
 
-        $this->set(compact('users'));
-    }
+        // $this->set(compact('users'));
+    // }
 
     /**
      * View method

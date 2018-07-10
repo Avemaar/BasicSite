@@ -42,8 +42,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </ul>
         <div class="top-bar-section">
             <ul class="right">
-                <li><?php echo $this->Html->link('Registration',['controller'=>'users','action'=>'registration'])?></li>
-                <li><?php echo $this->Html->link('Login',['controller'=>'users','action'=>'login'])?></li>
+                <li><?php echo $this->Html->link('Profile',['controller'=>'users','action'=>'profile',$user->id])?></li>
+                <li><?php echo $this->Html->link('Logout',['controller'=>'users','action'=>'logout'])?></li>
+                
 
             </ul>
         </div>
