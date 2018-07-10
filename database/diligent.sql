@@ -39,8 +39,6 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `password`, `email`, `attemp`) VALUES
-(1, 'janos', 'jelszo', 'jan@free.net', 7),
-(2, 'zsolt', 'jelszo', 'zsolt@free.net', 0),
 (17, 'Zoltan', 'c183ecb4feb98222bb6dc75eb2099de890718af9', 'nincsd@free.net', 1);
 
 --
