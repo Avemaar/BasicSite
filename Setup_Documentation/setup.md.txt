@@ -18,11 +18,11 @@ A Telepitéshez szükséges lépések:
 	e-mail küldéshez szükséges beállítások:
 		'EmailTransport' => [
 			'default' => [	
-		  'host' => 'localhost',
+		  'host' => 'localhost',//SMPT server neve
 				'port' => 25,
 				'timeout' => 30,
-				'username' => null,
-				'password' => null,
+				'username' => null,//SMPT felhasználónév
+				'password' => null,//SMPT jelszó
 				]
 			]
 			
