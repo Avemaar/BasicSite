@@ -31,14 +31,14 @@ CREATE TABLE `users` (
   `name` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `attemp` int(11) DEFAULT NULL
+  `attempt` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `password`, `email`, `attemp`) VALUES
+INSERT INTO `users` (`id`, `name`, `password`, `email`, `attempt`) VALUES
 (17, 'Zoltan', 'c183ecb4feb98222bb6dc75eb2099de890718af9', 'nincsd@free.net', 1);
 
 --
