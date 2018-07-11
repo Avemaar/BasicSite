@@ -40,7 +40,8 @@ class UsersController extends AppController
 		if(!($check))
 			{
 				$this->Flash->error(__('Wrong user or password'));
-				
+			
+			/*Letezo felhasznalo ellenorzese*/	
 				$temp=$this->Users->find()
 				->where(['name'=>$this->request->getData('name')])
 				->first()
