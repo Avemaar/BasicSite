@@ -1,0 +1,29 @@
+A Telepitéshez szükséges lépések: 
+
+-A Letöltött konyvtár teljes tartalmát el kell helyezni a Htdocs könyvtárba(XAmpp használata esetén)
+
+-A Database mappaban található fájl-t(vagy annak tartalmát SPL parancsként futtatni) kell importálni PHPMyAdminba
+
+-A config/app.php-ban kell beállítani: 
+
+	az adatbázis hozzáférést:
+		'DataSources'=>
+		['default'=>[
+		 'host' => '127.0.0.1', // celszeru a hostot ilyen formában megadni és nem localhostként mert különben lassú lesz a lekérdezés
+		 'username' => 'root',
+		 'password' => '',
+		 'database' => 'diligent',
+		]]
+	
+	e-mail küldéshez szükséges beállítások:
+		'EmailTransport' => [
+			'default' => [	
+		  'host' => 'localhost',
+				'port' => 25,
+				'timeout' => 30,
+				'username' => null,
+				'password' => null,
+				]
+			]
+			
+
