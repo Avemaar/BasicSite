@@ -6,7 +6,7 @@ use App\Controller\AppController;
 use Cake\Core\Configure;
 use Cake\Utility\Security;
 
-
+use Cake\Mailer\Email;
 
 
 /**
@@ -217,12 +217,33 @@ class UsersController extends AppController
 			
 			if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-
+				
+				$this->sendRegistrationEmail($user);
+				
                 return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
+    }
+	
+	
+	
+	 public function sendRegistrationEmail($user) {
+        $email = new Email();
+        $email->template('registration');
+        $email->emailFormat('both');
+        
+		$email->from(['info@diligent.hu'=>'Micro site Registration']);
+        $email->to($user->email);
+        $email->subject('Registration');
+        
+		$email->viewVars(['name' => $user->name,'email'=>$user->email]);
+        if ($email->send()) {
+            $this->Flash->success(__('Check your email for your registration'));
+        } else {
+            $this->Flash->error(__('Error sending email: ') . $email->smtpError);
+        }
     }
 
     /**
