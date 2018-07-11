@@ -83,6 +83,7 @@ class UsersController extends AppController
 			
 			
 			}
+		/*Sikeres belepes*/
 		else{
 			
 			
@@ -90,16 +91,21 @@ class UsersController extends AppController
 			$session->write('useridd',$check->id);
 			
 			
-			$this->request->session()->write('userid',$check->id);
+			$this->request->getSession()->write('userid',$check->id);
 			
 			//$this->Flash->success($this->request->session()->read('userid'));
 			//$this->Flash->success($check->name);
 			
-			$this->viewBuilder()->layout('inlogged'); 
-			$this->layout='inlogged';
+			$this->viewBuilder()->setLayout('inlogged'); 
+			$this->setLayout='inlogged';
+			
+			
+			$check->attempt=0;
+			$this->Users->save($check);
+			
 			return $this->redirect(['action' => 'greetings',$check->id]);
 			
-			echo ('found!');}
+			//echo ('found!');}
 			
 		}
 	
@@ -107,11 +113,11 @@ class UsersController extends AppController
 	
 	}
 	
-	
+	}
 	public function greetings($id = null)
     {
 	
-		$this->viewBuilder()->layout('inlogged'); 
+		$this->viewBuilder()->setLayout('inlogged'); 
 		$session = $this->getRequest()->getSession();
 		$session->read('useridd');
 			
@@ -164,7 +170,7 @@ class UsersController extends AppController
 
 			
 			
-			$this->request->session()->write('userid',null);
+			$this->request->getSession()->write('userid',null);
 			
 			$this->Flash->success(Configure::read('userid'));
 			
