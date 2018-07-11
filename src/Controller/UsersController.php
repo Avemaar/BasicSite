@@ -36,84 +36,88 @@ class UsersController extends AppController
 			;
 		
 		
+		/*Hibas felhasznalo vagy jelszo*/
 		if(!($check))
-			{$this->Flash->error(__('Wrong user or password'));
-			
-			$temp=$this->Users->find()
-			->where(['name'=>$this->request->getData('name')])
-			->first()
-			;
-			
-			//debug($temp);
-			$captcha=$this->request->getData('g-recaptcha-response'); 	
-			if(!$captcha)
 			{
+				$this->Flash->error(__('Wrong user or password'));
+				
+				$temp=$this->Users->find()
+				->where(['name'=>$this->request->getData('name')])
+				->first()
+				;
+			
+			
 			if($temp)
 				{
 					$temp->attempt+=1;
 					$attempt=$temp->attempt;
 					$this->Users->save($temp);
-				$this->set(compact('attempt'));
+					$this->set(compact('attempt'));
 				}
-			}else
-
+			}
+			
+					
+			
+			
+		/*Sikeres belepes(felhasznalo es jelszo rendben,Captcha meg nem volt)*/
+		else if($check->attempt<3){
+							
+			$this->succesLogin($check);
+						
+		}else 
+		
+		if($check->attempt>=3)
+		{
+			$attempt=$check->attempt;
+			$this->set(compact('attempt'));
+			
+				/*Captcha ellenorzese*/
+				if($this->getCaptcha())
 				{
-				//debug($captcha);			
+					$check->attempt=0;
+					$attempt=$check->attempt;
+					$this->Users->save($check);
+					$this->set(compact('attempt'));
+					$this->succesLogin($check);
+				}
+		}
+	
+	}
+	
+	}
+	
+	
+	public function succesLogin($check)
+	{
+		$session = $this->getRequest()->getSession();
+			$session->write('useridd',$check->id);
+						
+			$this->request->getSession()->write('userid',$check->id);
+									
+			$this->viewBuilder()->setLayout('inlogged'); 
+			$this->setLayout='inlogged';
+									
+			return $this->redirect(['action' => 'greetings',$check->id]);
+	}
+	
+	public function getCaptcha()
+	{
+				$captcha=$this->request->getData('g-recaptcha-response'); 	
 				$ip =$this->request->clientIp();
 				$secretkey = "6LcO0GIUAAAAAM3dyyLqKAkGZESUPIdjJNKiM6Cs";					
 				
 				$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secretkey."&response=".
 				
 				$captcha."&remoteip=".$ip);
-				$responseKeys = json_decode($response,true);	     
+				$responseKeys = json_decode($response,true);
 
-				
-					if(intval($responseKeys["success"]) == 1) {
-							$temp->attempt=0;
-							$this->Users->save($temp);
-							$this->set(compact('attempt'));
+				if(intval($responseKeys["success"]) == 1) {
+							
 						
-						
-					}             
-
-				}
-			
-			
-			
-			
-			
-			}
-		/*Sikeres belepes*/
-		else{
-			
-			
-			$session = $this->getRequest()->getSession();
-			$session->write('useridd',$check->id);
-			
-			
-			$this->request->getSession()->write('userid',$check->id);
-			
-			//$this->Flash->success($this->request->session()->read('userid'));
-			//$this->Flash->success($check->name);
-			
-			$this->viewBuilder()->setLayout('inlogged'); 
-			$this->setLayout='inlogged';
-			
-			
-			$check->attempt=0;
-			$this->Users->save($check);
-			
-			return $this->redirect(['action' => 'greetings',$check->id]);
-			
-			//echo ('found!');}
-			
-		}
-	
-	
-	
+						return true;
+				}  	else {return false;}
 	}
 	
-	}
 	public function greetings($id = null)
     {
 	
