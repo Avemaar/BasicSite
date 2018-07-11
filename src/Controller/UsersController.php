@@ -141,7 +141,7 @@ class UsersController extends AppController
 	
 	public function profile($id = null)
     {
-	$this->viewBuilder()->layout('inlogged'); 
+	$this->viewBuilder()->setLayout('inlogged'); 
 		
 		$session = $this->getRequest()->getSession();
 		$session->read('useridd');
