@@ -58,7 +58,14 @@ class UsersTable extends Table
             ->scalar('password')
             ->maxLength('password', 255)
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->notEmpty('password')
+			
+			->add('password',[
+			'characters'=>[
+			'rule'=>['custom','/^(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/'],
+			'message'=>'Alphanumeric characters']
+		])
+			;
 
         $validator
             ->email('email')

@@ -21,7 +21,7 @@
     </fieldset>
     <?= $this->Form->button(__('Enter')) ?>
     
-	<?php if((isset($attempt) && $attempt>3))
+	<?php if((isset($attempt) && $attempt>=3))
 	{
 		
 		echo '<div class="g-recaptcha" data-sitekey="6LcO0GIUAAAAACFW1W1BDkli_WIXBoc7GsVbn5eo"></div>';

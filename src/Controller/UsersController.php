@@ -7,6 +7,8 @@ use Cake\Core\Configure;
 use Cake\Utility\Security;
 
 
+
+
 /**
  * Users Controller
  *
@@ -43,13 +45,42 @@ class UsersController extends AppController
 			;
 			
 			//debug($temp);
-				if($temp)
+			$captcha=$this->request->getData('g-recaptcha-response'); 	
+			if(!$captcha)
+			{
+			if($temp)
 				{
-					$temp->attemp+=1;
-					$attempt=$temp->attemp;
+					$temp->attempt+=1;
+					$attempt=$temp->attempt;
 					$this->Users->save($temp);
 				$this->set(compact('attempt'));
 				}
+			}else
+
+				{
+				//debug($captcha);			
+				$ip =$this->request->clientIp();
+				$secretkey = "6LcO0GIUAAAAAM3dyyLqKAkGZESUPIdjJNKiM6Cs";					
+				
+				$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secretkey."&response=".
+				
+				$captcha."&remoteip=".$ip);
+				$responseKeys = json_decode($response,true);	     
+
+				
+					if(intval($responseKeys["success"]) == 1) {
+							$temp->attempt=0;
+							$this->Users->save($temp);
+							$this->set(compact('attempt'));
+						
+						
+					}             
+
+				}
+			
+			
+			
+			
 			
 			}
 		else{
@@ -175,15 +206,19 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function registration()
     {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
+            
+			$password=Security::hash($this->request->getData('password'));
+			$user = $this->Users->patchEntity($user, $this->request->getData());
+            $user->password=$password;
+			
+			if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
