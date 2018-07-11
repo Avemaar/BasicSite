@@ -9,10 +9,10 @@ A Telepitéshez szükséges lépések:
 	az adatbázis hozzáférést:
 		'DataSources'=>
 		['default'=>[
-		 'host' => '127.0.0.1', // celszeru a hostot ilyen formában megadni és nem localhostként mert különben lassú lesz a lekérdezés
-		 'username' => 'root',
-		 'password' => '',
-		 'database' => 'diligent',
+		 'host' => '127.0.0.1', // celszeru a hostot ilyen formában megadni és nem localhost-ként mert különben lassú lesz a lekérdezés
+		 'username' => 'root',//Adatbázis felhasználónév
+		 'password' => '', //Adatbázis jelszó
+		 'database' => 'diligent',//Adatbázis neve
 		]]
 	
 	e-mail küldéshez szükséges beállítások:
