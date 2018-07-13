@@ -63,8 +63,14 @@ class UsersTable extends Table
 			->add('password',[
 			'characters'=>[
 			'rule'=>['custom','/^(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/'],
-			'message'=>'Alphanumeric characters']
-		])
+			'message'=>'Alphanumeric characters']])
+			
+			->add('password', [
+        '	length' => [
+            'rule' => ['minLength', 8],
+            'message' => 'Password must be at least 8 characters long']
+			]
+		)
 			;
 
         $validator

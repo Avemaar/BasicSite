@@ -21,7 +21,7 @@
 <body>
   
 	<p>
-	Thank you for your registration <?php $name;?>
+	Thank you for your registration <?php echo $name;?>
 	</p>
 	
 	

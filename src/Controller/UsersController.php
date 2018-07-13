@@ -222,11 +222,22 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             
-			$password=Security::hash($this->request->getData('password'));
+			
 			$user = $this->Users->patchEntity($user, $this->request->getData());
-            $user->password=$password;
+         
+					
+			if(!$user->getError('password'))
+			{
+					$password=Security::hash($this->request->getData('password'));
+					$user->password=$password;	
+			}
+			
+
 			
 			if ($this->Users->save($user)) {
+				
+			
+			
                 $this->Flash->success(__('The user has been saved.'));
 				
 				$this->sendRegistrationEmail($user);
@@ -242,14 +253,14 @@ class UsersController extends AppController
 	
 	 public function sendRegistrationEmail($user) {
         $email = new Email();
-        $email->template('registration');
-        $email->emailFormat('both');
+        $email->setTemplate('registration');
+        $email->setEmailFormat('both');
         
-		$email->from(['info@diligent.hu'=>'Micro site Registration']);
-        $email->to($user->email);
-        $email->subject('Registration');
+		$email->setFrom(['regisztracio@diligetn.hu'=>'Micro site Registration']);
+        $email->setTo($user->email);
+        $email->setSubject('Registration');
         
-		$email->viewVars(['name' => $user->name,'email'=>$user->email]);
+		$email->setViewVars(['name' => $user->name,'email'=>$user->email]);
         if ($email->send()) {
             $this->Flash->success(__('Check your email for your registration'));
         } else {
